@@ -1,12 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Ñatapult : MonoBehaviour
 {
     [SerializeField] private SpringJoint _springJoint;
+    [SerializeField] private Transform _bulletSpawnPoint;
+    [SerializeField] private Bullet _bulletPrefab;
 
     private KeyCode _activateKey = KeyCode.F;
+    private KeyCode _reloadKey = KeyCode.G;
     private float _targetStiffness = 90;
 
     private void Update()
@@ -15,10 +16,20 @@ public class Ñatapult : MonoBehaviour
         {
             Activate();
         }
+        else if (Input.GetKeyDown(_reloadKey))
+        {
+            Reload();
+        }
     }
 
-    public void Activate()
+    private void Activate()
     {
         _springJoint.spring = _targetStiffness;
+    }
+
+    private void Reload()
+    {
+        _springJoint.spring = 0;
+        Instantiate(_bulletPrefab, _bulletSpawnPoint.transform.position, _bulletSpawnPoint.transform.rotation);
     }
 }
